@@ -1,0 +1,62 @@
+esercizio 1
+
+SELECT * FROM public.clienti WHERE cliente_nome = 'mario';
+
+esercizio 2
+
+SELECT cliente_nome, cliente_cognome FROM public.clienti WHERE EXTRACT(YEAR FROM cliente_nascita)  = 1982;
+
+eservizio 3
+
+SELECT numero_fattura FROM public.fattura WHERE fattura_iva  = 20;
+
+esercizio 4
+
+SELECT * FROM public.prodotti WHERE EXTRACT(YEAR FROM prodotto_data_attivazione) = 2017 
+AND (prodotto_inproduzione='yes'  or prodotto_incommericio= 'yes');
+
+esercizio 5
+
+SELECT fattura.*, clienti.cliente_nome, clienti.cliente_cognome FROM public.fattura 
+JOIN clienti ON fattura.cliente_id = clienti_numero_cliente
+WHERE fattura.fattura_importo < 1000
+
+esercizio 6
+
+SELECT fattura.numero_fattura, fattura.fattura_importo, fattura.fattura_iva,fattura.data_fattura, fornitori.fornitore_denominazione  FROM public.fattura 
+JOIN fornitori ON fattura.fornitore_id = numero_fornitore 
+
+esercizio 7
+
+SELECT EXTRACT(YEAR FROM data_fattura) AS Anno, COUNT(*) AS  numero_fattura
+FROM fattura
+WHERE fattura_iva = 20
+GROUP BY EXTRACT(YEAR FROM data_fattura);
+
+esercizio 8
+
+SELECT COUNT(*) AS numero_fattura,
+       SUM(fattura_importo) AS somma_importo
+FROM public.fattura;
+
+esercizio 9
+
+SELECT data_fattura
+FROM fattura
+WHERE fattura_tipologia = 'A'
+GROUP BY data_fattura
+HAVING COUNT(numero_fattura) > 2;
+
+esercizio 10
+
+SELECT clienti.cliente_regione, SUM(fattura.fattura_importo) as Totale_importo
+FROM clienti
+JOIN fattura ON fattura.cliente_id = clienti.clienti_numero_cliente
+GROUP BY clienti.cliente_regione;
+
+esercizio 11
+
+SELECT COUNT(clienti.clienti_numero_cliente) as numero_clienti
+FROM clienti
+JOIN fattura ON clienti.clienti_numero_cliente = fattura.cliente_id
+WHERE EXTRACT(YEAR FROM clienti.cliente_nascita) = 1980 AND fattura.fattuRa_importo > 50;
